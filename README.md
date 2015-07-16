@@ -11,8 +11,8 @@ One way of handling this event is described in the SDK documentation:
 >When this happens, allow the device to go into System Off mode and then press Button 1. This will wake up the application and clear all existing bonds. 
 >The bonds can also be cleared by power-cycling the board by keeping the Button 1 pressed. ([SDK documentation])
 
-Another alternative is to make use of the DM API to clear devices that are no longer needed rather than of clearing all of them. However, the 
-challenge for the application is do know which bond to delete. 
+Another alternative is to make use of the DM API to clear devices that are no longer needed rather than clearing all of them. However, the 
+challenge for the application is to know which bond to delete. 
 
 In this example I have chosen to implement automatic deletion of the bonded device that was least recently stored when the limit is reached, hence stopping the 
 DM_DEVICE_CONTEXT_FULL event from occurring. This means that there will always be at least one row available for a new bond.

@@ -674,11 +674,13 @@ static uint32_t device_manager_evt_handler(dm_handle_t const * p_handle,
         
         //Find first and last bond created from m_bond_index_table 
         app_bond_find(&m_app_bond_table,&table_index);
-                
-        //Increment counter variable for last bond for the new device
-        table_index.mr_cnt_val++;
-        // Asign new index to the current device(new bond) 
-        m_app_bond_table.app_bond_cnt[p_handle->device_id] = table_index.mr_cnt_val;
+        
+		//Increment counter if a new bond was created
+        if(!(table_index.mr_cnt_val >= m_app_bond_table.app_bond_cnt[p_handle->device_id]))
+        {
+           table_index.mr_cnt_val++;
+           m_app_bond_table.app_bond_cnt[p_handle->device_id] = table_index.mr_cnt_val;
+        }
                 
         //Delete first created bond if bond table is full 
         if(((table_index.mr_cnt_val-table_index.lr_cnt_val)== DEVICE_MANAGER_MAX_BONDS-1)

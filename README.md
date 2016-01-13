@@ -1,5 +1,9 @@
 # nRF51-ble-peripheral-bond-handling
 
+## Kwown issue
+** The device will become stuck in an endless reset loop if the DM_NO_APP_CONTEXT assert is thrown in app_bond_init(). This can be triggered if an unexepcet reset occurs
+while the application context is being written to. I will try to make a patch for this** 
+
 The device manager accepts new bonding procedures even when the number of devices has reached the device manager's set limit(DEVICE_MANAGER_MAX_BONDS),
 but the bonding information will not be stored persistently. In such cases, application will be notified with DM_DEVICE_CONTEXT_FULL 
 as event result at the completion of the security procedure. It is in other words up to the application to handle this event. 

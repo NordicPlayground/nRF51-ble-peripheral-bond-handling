@@ -23,7 +23,7 @@ DM_DEVICE_CONTEXT_FULL event from occurring. This means that there will always b
  - The least recently bond stored may also be the one that is the most frequently used. In this case the device needs to establish a new bond with the peer.
    Thus, making it the most recently stored bond.
  - DM_DEVICE_CONTEXT_FULL may occur if the following conditions are met; new device is added and it takes up the last available flash block in addition to an unexpected resets occurring
-   while the app is attempting to update the application context and clear the least recently stored device. :The chance of this happening should be rather unlikely. To recover from 
+   while the app is attempting to update the application context and clear the least recently stored device. The chance of this happening should be rather unlikely. To recover from 
    this the application will clear all devices followed by a system reset.
   
 ##Requirements

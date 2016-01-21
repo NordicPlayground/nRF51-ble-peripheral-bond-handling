@@ -1,16 +1,12 @@
 # nRF51-ble-peripheral-bond-handling
 
-## Known issue
- - **The device will become stuck in an endless reset loop if the DM_NO_APP_CONTEXT assert is thrown in app_bond_init(). This can be**    **triggered if an unexepcet reset occurs**
-   **while the application context is being written to. I will try to make a patch for this in the course of this or next week** 
-
 The device manager accepts new bonding procedures even when the number of devices has reached the device manager's set limit(DEVICE_MANAGER_MAX_BONDS),
 but the bonding information will not be stored persistently. In such cases, application will be notified with DM_DEVICE_CONTEXT_FULL 
 as event result at the completion of the security procedure. It is in other words up to the application to handle this event. 
 
 One way of handling this event is described in the SDK documentation: 
 
->Behaviour when maximum number of bonds is reached: All applications that support bonding use the bond manager module. 
+>Behavior when maximum number of bonds is reached: All applications that support bonding use the bond manager module. 
 >When the bond manager notifies the application that it cannot store a newly bonded master into the flash, the application will assert. 
 >When this happens, allow the device to go into System Off mode and then press Button 1. This will wake up the application and clear all existing bonds. 
 >The bonds can also be cleared by power-cycling the board by keeping the Button 1 pressed. ([SDK documentation])
@@ -18,15 +14,18 @@ One way of handling this event is described in the SDK documentation:
 Another alternative is to make use of the DM API to clear devices that are no longer needed rather than clearing all of them. However, the 
 challenge for the application is to know which bond to delete. 
 
-In this example I have chosen to implement automatic deletion of the bonded device that was least recently stored when the limit is reached, hence stopping the 
+In this example I have chosen to implement automatic deletion of the bonded device that was least recently stored when set limit is reached, hence stopping the 
 DM_DEVICE_CONTEXT_FULL event from occurring. This means that there will always be at least one row available for a new bond.
 
 ##Notes
 
- - The example always keeps one bond free, so make sure to adjust DEVICE_MANAGER_MAX_BONDS to desired number of bonds + 1.
+ - The example always keeps one block free for a new device to be added, so make sure to adjust DEVICE_MANAGER_MAX_BONDS to desired number of bonds + 1.
  - The least recently bond stored may also be the one that is the most frequently used. In this case the device needs to establish a new bond with the peer.
-   Thus, making it the most recently stored bond. 
-
+   Thus, making it the most recently stored bond.
+ - DM_DEVICE_CONTEXT_FULL may occur if the following conditions are met; new device is added and it takes up the last available flash block in addition to an unexpected resets occurring
+   while the app is attempting to update the application context and clear the least recently stored device. :The chance of this happening should be rather unlikely. To recover from 
+   this the application will clear all devices followed by a system reset.
+  
 ##Requirements
 
  - nRF51 SDK version 9.0.0

@@ -24,7 +24,7 @@
 #include "device_manager.h"
 
 #define NO_APP_CONTEXT                   0xFFFFFFFF         /**< Value to indicate no application context. This is true when there is not bond info for the given device.*/
-
+#define INVALID_APP_CONTEXT              0                  /**< Value if app context failed to be fully updated in previous session. May occur if device received an unexpected reset during flash write*/
 
 /**@brief app_bond_table_t index info. */
 typedef struct
